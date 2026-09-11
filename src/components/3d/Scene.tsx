@@ -21,6 +21,7 @@ import SakuraParticles from './SakuraParticles';
 import FireflyParticles from './FireflyParticles';
 import SharinganWallPiece from './SharinganWallPiece';
 import ToyVehicles from './ToyVehicles';
+import FloatingQuote from './FloatingQuote';
 import { PROJECTS } from '@/data/projects';
 
 interface SceneProps {
@@ -87,6 +88,13 @@ export default function Scene({ scrollProgress, mouseRef }: SceneProps) {
             onDoorClick={handleDoorClick}
           />
         ))}
+
+        {/* Floating quote near Solana door — slides in from left */}
+        <FloatingQuote
+          text={"Any fool can write code\nthat a computer can understand.\nGood programmers write code\nthat humans can understand."}
+          position={[0, 1.8, -48]}
+          triggerDistance={14}
+        />
 
         {/* --- z=-78: SKILLS LABEL (no door) --- */}
         <group position={[0, 3.4, -78]}>

@@ -6,7 +6,6 @@ import { Html } from '@react-three/drei';
 const WALL_POEMS = [
   { text: '"Code is poetry —\nwrite it like no one\'s watching,\nship it like everyone is."', z: -8, side: 'left' as const },
   { text: '"First, solve the problem.\nThen, write the code."', z: -25, side: 'right' as const },
-  { text: '"Any fool can write code\nthat a computer can understand.\nGood programmers write code\nthat humans can understand."', z: -50, side: 'left' as const },
   { text: '"Simplicity is the\nsoul of efficiency."', z: -65, side: 'right' as const },
   { text: '"It\'s not a bug —\nit\'s an undocumented feature."', z: -85, side: 'left' as const },
   { text: '"The best error message\nis the one that\nnever shows up."', z: -95, side: 'right' as const },
