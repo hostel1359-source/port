@@ -1,0 +1,20 @@
+export const PERSONAL = {
+  name: 'Manvesh',
+  username: 'mnvvshu',
+  title: 'Developer',
+  tagline: 'Building things that push boundaries',
+  bio: "Hey there! I'm Manvesh — a passionate developer who loves to push the boundaries of what's possible. Whether it's optimizing systems, building tools, or experimenting with new tech, I'm always down to ship something interesting.",
+  motto: 'Code is poetry — write it like no one\'s watching, ship it like everyone is.',
+  email: 'madmnvshhh@gmail.com',
+  github: 'https://github.com/mnvvshu',
+  avatarUrl: 'https://avatars.githubusercontent.com/u/269957527?v=4',
+  interests: [
+    'AI-powered developer tools',
+    'Blockchain & on-chain analytics',
+    'Quantitative finance systems',
+    'System optimization & performance',
+    'Real-time communication',
+    'Open-source building',
+  ],
+  cta: "Let's build something interesting.",
+} as const;
