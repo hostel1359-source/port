@@ -1,1 +1,0 @@
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 55' preserveAspectRatio='none'><path d='M0 0 L50 0 L49 5.5 L50 11 L48.5 19 L50 27.5 L49 36 L50 44 L48.5 49.5 L50 55 L45 54 L40 55 L35 53 L30 55 L25 54 L20 55 L15 53 L10 55 L5 54 L0 55 L1 49.5 L0 44 L1.5 36 L0 27.5 L1 19 L0 11 L1.5 5.5 L0 0 Z' fill='none' stroke='#1a1a1a' stroke-width='1.5'/></svg>

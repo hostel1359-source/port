@@ -1,5 +1,0 @@
-/** <Typesetter>.init **/
-
-troikaDefine(
-function init(l,r,f){return l(r,f())}
-)

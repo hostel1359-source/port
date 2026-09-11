@@ -1,5 +1,0 @@
-/** <Typr Font Parser>.init **/
-
-troikaDefine(
-function init(l,r,f){const u=l(),t=r();return f(u,t)}
-)

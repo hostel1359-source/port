@@ -1,5 +1,0 @@
-/** <Typesetter>.init **/
-
-troikaDefine(
-function init(l){return function(r){return new Promise(f=>{l.typeset(r,f)})}}
-)
