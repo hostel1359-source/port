@@ -21,17 +21,18 @@ export default function DoorFrame({ position, label, color }: DoorFrameProps) {
   const htmlRef = useRef<HTMLDivElement>(null);
 
   const frameMaterial = useMemo(() => new THREE.MeshStandardMaterial({
-    color: '#1a1a2e', transparent: true, opacity: 0, metalness: 0.3,
+    color: '#5c4a3a', transparent: true, opacity: 0,
   }), []);
   const doorMaterial = useMemo(() => new THREE.MeshStandardMaterial({
-    color: '#16213e', transparent: true, opacity: 0, metalness: 0.2,
+    color: '#8B7355', transparent: true, opacity: 0,
   }), []);
   const accentMaterial = useMemo(() => new THREE.MeshStandardMaterial({
-    color, emissive: color, emissiveIntensity: 0.5, transparent: true, opacity: 0,
+    color, transparent: true, opacity: 0,
   }), [color]);
 
   useFrame((state) => {
     if (!groupRef.current) return;
+
     const camZ = state.camera.position.z;
     const doorZ = position[2];
     const dist = Math.abs(camZ - doorZ);
@@ -62,52 +63,53 @@ export default function DoorFrame({ position, label, color }: DoorFrameProps) {
 
   return (
     <group ref={groupRef} position={position}>
-      {/* Neon glow light */}
-      <pointLight position={[0, 2, 0.5]} intensity={1.5} distance={8} color={color} />
-
-      {/* Frame */}
+      {/* Frame Top */}
       <mesh position={[0, 3, 0]} material={frameMaterial}>
         <boxGeometry args={[3.2, 0.2, 0.4]} />
-        <Outlines thickness={0.025} color={color} />
+        <Outlines thickness={0.02} color="#1a1a1a" />
       </mesh>
+      {/* Frame Left */}
       <mesh position={[-1.5, 1.5, 0]} material={frameMaterial}>
         <boxGeometry args={[0.2, 3, 0.4]} />
-        <Outlines thickness={0.025} color={color} />
+        <Outlines thickness={0.02} color="#1a1a1a" />
       </mesh>
+      {/* Frame Right */}
       <mesh position={[1.5, 1.5, 0]} material={frameMaterial}>
         <boxGeometry args={[0.2, 3, 0.4]} />
-        <Outlines thickness={0.025} color={color} />
+        <Outlines thickness={0.02} color="#1a1a1a" />
       </mesh>
 
-      {/* Neon sign */}
+      {/* Sign above door */}
       <mesh position={[0, 3.4, 0]} material={accentMaterial}>
         <planeGeometry args={[1.5, 0.5]} />
-        <Outlines thickness={0.025} color={color} />
+        <Outlines thickness={0.02} color="#1a1a1a" />
       </mesh>
       <Html position={[0, 3.4, 0.01]} transform center distanceFactor={15}>
         <div ref={htmlRef} style={{
-          fontFamily: 'Inter, -apple-system, sans-serif',
+          fontFamily: 'Caveat, "Gloria Hallelujah", cursive',
           fontSize: '24px',
           fontWeight: 'bold',
-          color: '#ffffff',
-          textShadow: `0 0 10px ${color}, 0 0 20px ${color}`,
+          color: '#1a1a1a',
           opacity: 0,
+          transition: 'none',
         }}>
           {label}
         </div>
       </Html>
 
-      {/* Door panels */}
+      {/* Left door panel */}
       <group ref={leftDoorRef} position={[-1.4, 1.5, 0]}>
         <mesh position={[0.7, 0, 0]} material={doorMaterial}>
           <boxGeometry args={[1.4, 2.9, 0.1]} />
-          <Outlines thickness={0.025} color={color} />
+          <Outlines thickness={0.02} color="#1a1a1a" />
         </mesh>
       </group>
+
+      {/* Right door panel */}
       <group ref={rightDoorRef} position={[1.4, 1.5, 0]}>
         <mesh position={[-0.7, 0, 0]} material={doorMaterial}>
           <boxGeometry args={[1.4, 2.9, 0.1]} />
-          <Outlines thickness={0.025} color={color} />
+          <Outlines thickness={0.02} color="#1a1a1a" />
         </mesh>
       </group>
     </group>

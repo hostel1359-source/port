@@ -91,23 +91,22 @@ export default function SkillCloud({ position, active }: SkillCloudProps) {
         <group key={skill.name}>
           <mesh>
             <boxGeometry args={[1.1, 0.4, 0.04]} />
-            <meshStandardMaterial color="#16213e" roughness={0.3} metalness={0.2} />
-            <Outlines thickness={0.015} color="#00fff5" />
+            <meshStandardMaterial color="#ffffff" roughness={0.5} />
+            <Outlines thickness={0.015} color="#1a1a1a" />
           </mesh>
           <mesh position={[-0.5, 0, 0.01]}>
             <boxGeometry args={[0.08, 0.4, 0.05]} />
-            <meshStandardMaterial color={skill.color} emissive={skill.color} emissiveIntensity={0.3} />
+            <meshStandardMaterial color={skill.color} />
           </mesh>
           <Html position={[0.05, 0, 0.03]} transform center distanceFactor={6} zIndexRange={[100, 0]}>
             <div style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
               fontSize: '15px',
               fontWeight: 600,
-              color: '#e0e0ff',
+              color: '#1a1a1a',
               pointerEvents: 'none',
               whiteSpace: 'nowrap',
               letterSpacing: '0.02em',
-              textShadow: '0 0 8px rgba(0, 255, 245, 0.3)',
             }}>
               {skill.name}
             </div>

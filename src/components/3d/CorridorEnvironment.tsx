@@ -9,64 +9,47 @@ export default function CorridorEnvironment() {
   const corridorWidth = 8;
   const wallHeight = 5;
 
-  // Roblox-style blocky materials with cyberpunk neon colors
-  const floorMaterial = useMemo(() => new THREE.MeshStandardMaterial({ color: '#1a1a2e', roughness: 0.3, metalness: 0.2 }), []);
-  const wallMaterial = useMemo(() => new THREE.MeshStandardMaterial({ color: '#16213e', roughness: 0.4, metalness: 0.1 }), []);
-  const ceilingMaterial = useMemo(() => new THREE.MeshStandardMaterial({ color: '#0f0f23', roughness: 0.5 }), []);
-  const trimMaterial = useMemo(() => new THREE.MeshStandardMaterial({ color: '#00fff5', emissive: '#00fff5', emissiveIntensity: 0.3, roughness: 0.2, metalness: 0.8 }), []);
+  // itomdev-style: warm cream paper walls, light wood floor, sketch outlines
+  const floorMaterial = useMemo(() => new THREE.MeshStandardMaterial({ color: '#d4c8b0', roughness: 0.9 }), []);
+  const wallMaterial = useMemo(() => new THREE.MeshStandardMaterial({ color: '#f0ebe3', roughness: 0.85 }), []);
+  const ceilingMaterial = useMemo(() => new THREE.MeshStandardMaterial({ color: '#f5f0eb', roughness: 1.0 }), []);
 
   return (
     <group>
-      {/* Ambient - darker for cyberpunk */}
-      <ambientLight intensity={0.3} color="#4a00e0" />
-      <directionalLight position={[0, 4, 0]} intensity={0.4} color="#e040fb" />
+      {/* Soft warm ambient — like paper in daylight */}
+      <ambientLight intensity={0.9} color="#fff8f0" />
+      <directionalLight position={[0, 4, 0]} intensity={0.5} color="#ffffff" />
 
-      {/* Neon point lights along corridor */}
+      {/* Warm point lights along corridor */}
       {Array.from({ length: 12 }).map((_, i) => (
-        <pointLight key={i} position={[0, 4.2, -i * 15]} intensity={0.8} distance={18} color={i % 2 === 0 ? '#00fff5' : '#e040fb'} />
+        <pointLight key={i} position={[0, 3.5, -i * 15]} intensity={0.4} distance={20} color="#fff5e6" />
       ))}
 
-      {/* Cyberpunk fog */}
-      <fog attach="fog" args={['#0a0a1a', 20, 70]} />
+      {/* White fog — itomdev fades to white in distance */}
+      <fog attach="fog" args={['#f5f0eb', 15, 65]} />
 
-      {/* Floor */}
+      {/* Floor — light wood plank color */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, -corridorLength / 2 + 10]} material={floorMaterial}>
         <planeGeometry args={[corridorWidth, corridorLength]} />
-        <Outlines thickness={0.025} color="#00fff5" />
+        <Outlines thickness={0.015} color="#aaa095" />
       </mesh>
 
       {/* Left Wall */}
       <mesh rotation={[0, Math.PI / 2, 0]} position={[-corridorWidth / 2, wallHeight / 2, -corridorLength / 2 + 10]} material={wallMaterial}>
         <planeGeometry args={[corridorLength, wallHeight]} />
-        <Outlines thickness={0.025} color="#e040fb" />
+        <Outlines thickness={0.015} color="#c0b8a8" />
       </mesh>
 
       {/* Right Wall */}
       <mesh rotation={[0, -Math.PI / 2, 0]} position={[corridorWidth / 2, wallHeight / 2, -corridorLength / 2 + 10]} material={wallMaterial}>
         <planeGeometry args={[corridorLength, wallHeight]} />
-        <Outlines thickness={0.025} color="#e040fb" />
+        <Outlines thickness={0.015} color="#c0b8a8" />
       </mesh>
 
       {/* Ceiling */}
       <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, wallHeight, -corridorLength / 2 + 10]} material={ceilingMaterial}>
         <planeGeometry args={[corridorWidth, corridorLength]} />
-        <Outlines thickness={0.025} color="#4a00e0" />
-      </mesh>
-
-      {/* Neon floor trim strips (Roblox-style blocky neon bars) */}
-      <mesh position={[-corridorWidth / 2 + 0.15, 0.02, -corridorLength / 2 + 10]} rotation={[-Math.PI / 2, 0, 0]} material={trimMaterial}>
-        <planeGeometry args={[0.08, corridorLength]} />
-      </mesh>
-      <mesh position={[corridorWidth / 2 - 0.15, 0.02, -corridorLength / 2 + 10]} rotation={[-Math.PI / 2, 0, 0]} material={trimMaterial}>
-        <planeGeometry args={[0.08, corridorLength]} />
-      </mesh>
-
-      {/* Ceiling neon trim strips */}
-      <mesh position={[-corridorWidth / 2 + 0.15, wallHeight - 0.02, -corridorLength / 2 + 10]} rotation={[Math.PI / 2, 0, 0]} material={trimMaterial}>
-        <planeGeometry args={[0.08, corridorLength]} />
-      </mesh>
-      <mesh position={[corridorWidth / 2 - 0.15, wallHeight - 0.02, -corridorLength / 2 + 10]} rotation={[Math.PI / 2, 0, 0]} material={trimMaterial}>
-        <planeGeometry args={[0.08, corridorLength]} />
+        <Outlines thickness={0.015} color="#d0c8b8" />
       </mesh>
     </group>
   );
