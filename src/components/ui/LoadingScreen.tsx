@@ -213,7 +213,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
           color: '#8a7560',
           marginBottom: '30px',
         }}>
-          Creative Developer
+          &lt; Creative Developer /&gt;
         </p>
 
         {/* Progress bar */}
