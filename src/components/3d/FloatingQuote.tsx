@@ -9,14 +9,18 @@ interface FloatingQuoteProps {
   text: string;
   author?: string;
   position: [number, number, number];
+  side?: 'left' | 'right';
   triggerDistance?: number;
 }
 
-export default function FloatingQuote({ text, author, position, triggerDistance = 12 }: FloatingQuoteProps) {
+export default function FloatingQuote({ text, author, position, side = 'left', triggerDistance = 12 }: FloatingQuoteProps) {
   const groupRef = useRef<THREE.Group>(null);
-  const currentX = useRef(-5);
+  const currentX = useRef(side === 'left' ? -5 : 5);
   const currentOpacity = useRef(0);
   const htmlRef = useRef<HTMLDivElement>(null);
+
+  const startX = side === 'left' ? -5 : 5;
+  const wallX = side === 'left' ? -3.2 : 3.2;
 
   useFrame((state) => {
     if (!groupRef.current) return;
@@ -24,13 +28,14 @@ export default function FloatingQuote({ text, author, position, triggerDistance 
     const camZ = state.camera.position.z;
     const dist = Math.abs(camZ - position[2]);
 
-    let targetX = -5;
+    let targetX = startX;
     let targetOpacity = 0;
 
     if (dist < triggerDistance) {
       const t = 1 - dist / triggerDistance;
       const eased = t * t * (3 - 2 * t);
-      targetX = THREE.MathUtils.lerp(-5, 0, eased);
+      // Slide from wall toward center (but not fully center — stop partway)
+      targetX = THREE.MathUtils.lerp(wallX, side === 'left' ? -1 : 1, eased);
       targetOpacity = eased;
     }
 
@@ -46,7 +51,7 @@ export default function FloatingQuote({ text, author, position, triggerDistance 
   });
 
   return (
-    <group position={[position[0], position[1], position[2]]}>
+    <group position={[0, position[1], position[2]]}>
       <group ref={groupRef}>
         <Html
           transform
