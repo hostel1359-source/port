@@ -45,7 +45,7 @@ export default function FloatingQuote({ text, author, position, side = 'left', t
 
     // Wall text fades out as slide-out text fades in
     if (wallRef.current) {
-      wallRef.current.style.opacity = String(Math.max(0, 0.35 - currentOpacity.current * 0.35));
+      wallRef.current.style.opacity = String(Math.max(0.15, 0.7 - currentOpacity.current * 0.7));
     }
     if (htmlRef.current) {
       htmlRef.current.style.opacity = String(currentOpacity.current);
@@ -70,8 +70,8 @@ export default function FloatingQuote({ text, author, position, side = 'left', t
           style={{
             fontFamily: '"Caveat", "Gloria Hallelujah", cursive',
             fontSize: '14px',
-            fontWeight: 500,
-            color: 'rgba(90, 80, 65, 0.35)',
+            fontWeight: 700,
+            color: 'rgba(60, 46, 34, 0.7)',
             whiteSpace: 'pre-line',
             lineHeight: 1.4,
             textAlign: side === 'left' ? 'left' : 'right',
