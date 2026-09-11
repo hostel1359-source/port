@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { PROJECTS } from '@/data/projects';
 
 interface ProjectSidePanelProps {
@@ -15,136 +15,132 @@ const PROJECT_WINDOWS = [
 ];
 
 export default function ProjectSidePanel({ scrollProgress }: ProjectSidePanelProps) {
-  const [openProject, setOpenProject] = useState<number | null>(null);
+  const [insideProject, setInsideProject] = useState<number | null>(null);
 
-  // Listen for door click events
+  // Listen for camera-entered-door event (after fly-through completes)
   useEffect(() => {
-    const handler = (e: CustomEvent) => {
-      const idx = PROJECTS.findIndex(p => p.id === e.detail.projectId);
-      if (idx >= 0) setOpenProject(idx);
+    const handleEntered = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      const idx = PROJECTS.findIndex(p => p.id === detail.projectId);
+      if (idx >= 0) setInsideProject(idx);
     };
-    window.addEventListener('openProjectRoom' as string, handler as EventListener);
-    return () => window.removeEventListener('openProjectRoom' as string, handler as EventListener);
+    window.addEventListener('doorEntered', handleEntered);
+    return () => window.removeEventListener('doorEntered', handleEntered);
   }, []);
 
-  // Escape to close
+  // Escape to exit
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpenProject(null);
+      if (e.key === 'Escape' && insideProject !== null) {
+        setInsideProject(null);
+        window.dispatchEvent(new CustomEvent('doorExit'));
+      }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
+  }, [insideProject]);
+
+  const handleExit = useCallback(() => {
+    setInsideProject(null);
+    // Tell CameraRig to fly back
+    window.dispatchEvent(new CustomEvent('doorExit'));
   }, []);
 
-  const activeWindow = useMemo(() => {
-    return PROJECT_WINDOWS.find(
-      (w) => scrollProgress >= w.start && scrollProgress <= w.end
-    ) || null;
-  }, [scrollProgress]);
-
-  // Fullscreen project room
-  if (openProject !== null) {
-    const project = PROJECTS[openProject];
+  // ---- INSIDE A PROJECT ROOM ----
+  if (insideProject !== null) {
+    const project = PROJECTS[insideProject];
     if (!project) return null;
 
     return (
       <div
         style={{
           position: 'fixed', inset: 0, zIndex: 9000,
-          background: 'rgba(10, 8, 6, 0.95)',
-          backdropFilter: 'blur(20px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          animation: 'roomFadeIn 0.4s ease-out',
-          cursor: 'default',
+          animation: 'roomFadeIn 0.5s ease-out',
+          pointerEvents: 'auto',
         }}
-        onClick={() => setOpenProject(null)}
       >
+        {/* Semi-transparent backdrop */}
         <div
-          onClick={(e) => e.stopPropagation()}
+          onClick={handleExit}
           style={{
-            maxWidth: '780px', width: '90%', maxHeight: '85vh',
-            overflowY: 'auto', padding: '50px 60px',
+            position: 'absolute', inset: 0,
+            background: 'rgba(10, 8, 6, 0.85)',
+            backdropFilter: 'blur(12px)',
+          }}
+        />
+
+        {/* Content card */}
+        <div
+          style={{
+            position: 'relative', zIndex: 1,
+            maxWidth: '700px', width: '90%', maxHeight: '80vh',
+            overflowY: 'auto', padding: '48px 56px',
+            background: 'rgba(30, 27, 22, 0.95)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: '16px',
+            boxShadow: '0 32px 80px rgba(0,0,0,0.6)',
             fontFamily: 'Inter, -apple-system, sans-serif',
-            color: '#e8e0d0', position: 'relative',
+            color: '#e8e0d0',
           }}
         >
-          {/* Close button */}
-          <button
-            onClick={() => setOpenProject(null)}
-            style={{
-              position: 'absolute', top: '10px', right: '10px',
-              background: 'none', border: '1px solid rgba(255,255,255,0.2)',
-              color: '#999', fontSize: '18px', cursor: 'pointer',
-              width: '36px', height: '36px', borderRadius: '50%',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = '#fff'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = '#999'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; }}
-          >
-            ✕
-          </button>
-
-          {/* Number */}
+          {/* Big number watermark */}
           <div style={{
-            fontSize: '64px', fontWeight: 800, color: project.accentColor,
-            opacity: 0.15, position: 'absolute', top: '20px', left: '60px',
-            fontFamily: '"Gloria Hallelujah", cursive',
+            position: 'absolute', top: '16px', left: '56px',
+            fontSize: '72px', fontWeight: 800, color: project.accentColor,
+            opacity: 0.1, fontFamily: '"Gloria Hallelujah", cursive',
+            lineHeight: 1,
           }}>
-            {(openProject + 1).toString().padStart(2, '0')}
+            {(insideProject + 1).toString().padStart(2, '0')}
           </div>
 
           {/* Accent line */}
           <div style={{
-            width: '60px', height: '3px', background: project.accentColor,
-            marginBottom: '24px', borderRadius: '2px',
+            width: '50px', height: '3px', background: project.accentColor,
+            marginBottom: '20px', borderRadius: '2px',
           }} />
 
           {/* Title */}
           <h1 style={{
-            fontSize: '2.8rem', fontWeight: 800, color: '#ffffff',
-            margin: '0 0 8px', lineHeight: 1.1, letterSpacing: '-0.02em',
+            fontSize: '2.4rem', fontWeight: 800, color: '#ffffff',
+            margin: '0 0 6px', lineHeight: 1.1, letterSpacing: '-0.02em',
           }}>
             {project.title}
           </h1>
 
           {/* Subtitle */}
           <p style={{
-            fontSize: '1.1rem', fontWeight: 400, color: project.accentColor,
-            marginBottom: '32px', letterSpacing: '0.02em',
+            fontSize: '1rem', fontWeight: 400, color: project.accentColor,
+            marginBottom: '28px', letterSpacing: '0.02em',
           }}>
             {project.description}
           </p>
 
           {/* Divider */}
-          <div style={{
-            height: '1px', background: 'rgba(255,255,255,0.1)',
-            marginBottom: '28px',
-          }} />
+          <div style={{ height: '1px', background: 'rgba(255,255,255,0.08)', marginBottom: '24px' }} />
 
-          {/* Long description */}
+          {/* Description */}
           <p style={{
-            fontSize: '1rem', fontWeight: 300, color: '#c0b8a8',
-            lineHeight: 1.8, marginBottom: '36px',
+            fontSize: '0.95rem', fontWeight: 300, color: '#b8b0a0',
+            lineHeight: 1.8, marginBottom: '32px',
           }}>
             {project.longDescription}
           </p>
 
           {/* Tech stack */}
-          <div style={{ marginBottom: '36px' }}>
+          <div style={{ marginBottom: '32px' }}>
             <h3 style={{
-              fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em',
-              textTransform: 'uppercase', color: '#8a7560', marginBottom: '14px',
+              fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.2em',
+              textTransform: 'uppercase', color: '#8a7560', marginBottom: '12px',
             }}>
-              Tech Stack
+              Built With
             </h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {project.technologies.map((tech) => (
                 <span key={tech} style={{
-                  padding: '6px 16px', fontSize: '0.8rem', fontWeight: 500,
-                  color: '#e8e0d0', border: '1px solid rgba(255,255,255,0.15)',
-                  borderRadius: '4px', letterSpacing: '0.03em',
-                  background: 'rgba(255,255,255,0.04)',
+                  padding: '5px 14px', fontSize: '0.78rem', fontWeight: 500,
+                  color: '#d8d0c0', border: '1px solid rgba(255,255,255,0.12)',
+                  borderRadius: '4px', background: 'rgba(255,255,255,0.03)',
                 }}>
                   {tech}
                 </span>
@@ -152,37 +148,37 @@ export default function ProjectSidePanel({ scrollProgress }: ProjectSidePanelPro
             </div>
           </div>
 
-          {/* Action buttons */}
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+          {/* Buttons */}
+          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
             <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '8px',
-                padding: '12px 28px', fontSize: '0.8rem', fontWeight: 600,
-                letterSpacing: '0.12em', textTransform: 'uppercase',
+                padding: '11px 26px', fontSize: '0.78rem', fontWeight: 600,
+                letterSpacing: '0.1em', textTransform: 'uppercase',
                 color: '#0a0806', background: '#e8e0d0', textDecoration: 'none',
                 borderRadius: '6px', cursor: 'pointer', transition: 'all 0.2s',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.background = '#ffffff'; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = '#e8e0d0'; }}
             >
-              View on GitHub ↗
+              View Source ↗
             </a>
             <button
-              onClick={() => setOpenProject(null)}
+              onClick={handleExit}
               style={{
-                padding: '12px 28px', fontSize: '0.8rem', fontWeight: 600,
-                letterSpacing: '0.12em', textTransform: 'uppercase',
+                padding: '11px 26px', fontSize: '0.78rem', fontWeight: 600,
+                letterSpacing: '0.1em', textTransform: 'uppercase',
                 color: '#e8e0d0', background: 'transparent',
-                border: '1.5px solid rgba(255,255,255,0.25)',
+                border: '1.5px solid rgba(255,255,255,0.2)',
                 borderRadius: '6px', cursor: 'pointer', transition: 'all 0.2s',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
             >
-              Back to Corridor
+              ← Back
             </button>
           </div>
         </div>
@@ -190,7 +186,11 @@ export default function ProjectSidePanel({ scrollProgress }: ProjectSidePanelPro
     );
   }
 
-  // Auto side panel (when not in fullscreen mode)
+  // ---- NORMAL CORRIDOR: auto side panel on scroll proximity ----
+  const activeWindow = PROJECT_WINDOWS.find(
+    (w) => scrollProgress >= w.start && scrollProgress <= w.end
+  ) || null;
+
   if (!activeWindow) return null;
 
   const project = PROJECTS[activeWindow.projectIndex];
@@ -199,7 +199,6 @@ export default function ProjectSidePanel({ scrollProgress }: ProjectSidePanelPro
   const fadeIn = Math.min(1, (scrollProgress - activeWindow.start) / 0.02);
   const fadeOut = Math.min(1, (activeWindow.end - scrollProgress) / 0.02);
   const opacity = Math.min(fadeIn, fadeOut);
-
   const isLeft = activeWindow.side === 'left';
 
   return (
@@ -214,62 +213,40 @@ export default function ProjectSidePanel({ scrollProgress }: ProjectSidePanelPro
       <div
         style={{
           background: 'rgba(60, 55, 48, 0.88)', backdropFilter: 'blur(16px)',
-          borderRadius: '14px', padding: '36px 40px', maxWidth: '420px', width: '380px',
+          borderRadius: '14px', padding: '32px 36px', maxWidth: '380px', width: '340px',
           color: '#e8e0d0', fontFamily: 'Inter, -apple-system, sans-serif',
           border: '1px solid rgba(255,255,255,0.08)',
           boxShadow: '0 16px 60px rgba(0,0,0,0.35)',
         }}
       >
-        <div style={{ marginBottom: '16px' }}>
-          <span style={{ fontSize: '16px', fontWeight: 600, color: project.accentColor, opacity: 0.7 }}>
+        <div style={{ marginBottom: '14px' }}>
+          <span style={{ fontSize: '14px', fontWeight: 600, color: project.accentColor, opacity: 0.7 }}>
             {(activeWindow.projectIndex + 1).toString().padStart(2, '0')}
           </span>
         </div>
-        <h2 style={{ fontSize: '1.6rem', fontWeight: 700, color: '#ffffff', margin: '0 0 12px 0', lineHeight: 1.2 }}>
+        <h2 style={{ fontSize: '1.4rem', fontWeight: 700, color: '#ffffff', margin: '0 0 10px 0', lineHeight: 1.2 }}>
           {project.title}
         </h2>
-        <p style={{ fontSize: '0.9rem', fontWeight: 300, fontStyle: 'italic', color: '#d0c8b8', lineHeight: 1.7, marginBottom: '20px' }}>
-          {project.longDescription}
+        <p style={{ fontSize: '0.85rem', fontWeight: 300, fontStyle: 'italic', color: '#d0c8b8', lineHeight: 1.7, marginBottom: '18px' }}>
+          {project.description}
         </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '24px' }}>
-          {project.technologies.slice(0, 5).map((tech) => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '18px' }}>
+          {project.technologies.slice(0, 4).map((tech) => (
             <span key={tech} style={{
-              padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500,
+              padding: '3px 10px', fontSize: '0.7rem', fontWeight: 500,
               color: '#d0c8b8', border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: '3px', letterSpacing: '0.02em',
+              borderRadius: '3px',
             }}>
               {tech}
             </span>
           ))}
         </div>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <a
-            href={project.githubUrl} target="_blank" rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: '6px',
-              padding: '10px 22px', fontSize: '0.75rem', fontWeight: 600,
-              letterSpacing: '0.15em', textTransform: 'uppercase',
-              color: '#e8e0d0', textDecoration: 'none',
-              border: '1.5px solid rgba(255,255,255,0.25)', borderRadius: '5px',
-              cursor: 'pointer',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
-          >
-            VIEW SOURCE ↗
-          </a>
-          <button
-            onClick={() => setOpenProject(activeWindow.projectIndex)}
-            style={{
-              padding: '10px 22px', fontSize: '0.75rem', fontWeight: 600,
-              letterSpacing: '0.15em', textTransform: 'uppercase',
-              color: '#0a0806', background: '#e8e0d0',
-              border: 'none', borderRadius: '5px', cursor: 'pointer',
-            }}
-          >
-            ENTER ROOM
-          </button>
-        </div>
+        <p style={{
+          fontSize: '0.65rem', fontWeight: 500, color: '#8a7560',
+          letterSpacing: '0.15em', textTransform: 'uppercase',
+        }}>
+          Click the door to enter →
+        </p>
       </div>
     </div>
   );

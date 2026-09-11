@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useCallback } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html, Outlines } from '@react-three/drei';
 import * as THREE from 'three';
@@ -19,7 +19,6 @@ interface ProjectDoorProps {
 export default function ProjectDoor({
   projectId,
   title,
-  icon,
   index,
   accentColor,
   position,
@@ -32,29 +31,49 @@ export default function ProjectDoor({
 
   const doorRef = useRef<THREE.Group>(null);
   const currentOpen = useRef(0);
+  const hovered = useRef(false);
 
   const doorWidth = 1.4;
   const doorHeight = 2.8;
+  const isLeftWall = rotation[1] > 0;
 
-  // The door swings open when camera is near
+  // Door swings open on camera proximity
   useFrame((state) => {
     if (!doorRef.current) return;
     const camZ = state.camera.position.z;
     const doorZ = position[2];
-
-    // Open when camera is within 8 units of the door
     const dist = Math.abs(camZ - doorZ);
-    const targetOpen = dist < 8 ? Math.max(0, 1 - dist / 8) : 0;
 
-    currentOpen.current += (targetOpen - currentOpen.current) * 0.05;
+    // Open based on proximity + extra open on hover
+    let targetOpen = 0;
+    if (dist < 8) {
+      targetOpen = Math.max(0, 1 - dist / 8);
+    }
+    if (hovered.current) {
+      targetOpen = Math.max(targetOpen, 0.7);
+    }
 
-    // Swing door open — pivot from left edge (hinge side)
-    // If door is on left wall (rotation Y = PI/2), swing inward
-    // If door is on right wall (rotation Y = -PI/2), swing inward
-    const isLeftWall = rotation[1] > 0;
+    currentOpen.current += (targetOpen - currentOpen.current) * 0.08;
+
     const swingAngle = currentOpen.current * (Math.PI / 3);
     doorRef.current.rotation.y = isLeftWall ? swingAngle : -swingAngle;
   });
+
+  const handleClick = useCallback((e: THREE.Event) => {
+    if (e && 'stopPropagation' in e) (e as { stopPropagation: () => void }).stopPropagation();
+
+    // Dispatch doorEnter event for CameraRig
+    window.dispatchEvent(new CustomEvent('doorEnter', {
+      detail: {
+        projectId,
+        doorX: position[0],
+        doorZ: position[2],
+        isLeft: isLeftWall,
+      },
+    }));
+
+    onDoorClick(projectId);
+  }, [projectId, position, isLeftWall, onDoorClick]);
 
   return (
     <group position={position} rotation={rotation}>
@@ -72,20 +91,20 @@ export default function ProjectDoor({
         <Outlines thickness={0.015} color="#1a1a1a" />
       </mesh>
 
-      {/* Wall fill INSIDE the doorway (visible when door opens) */}
+      {/* Wall fill behind door */}
       <mesh position={[0, doorHeight / 2, -0.15]}>
         <planeGeometry args={[doorWidth, doorHeight]} />
         <meshStandardMaterial color="#f0ebe3" roughness={0.8} />
       </mesh>
 
-      {/* Door panel — pivots from left edge (hinge) */}
+      {/* Door panel — pivots from left edge */}
       <group ref={doorRef} position={[-doorWidth / 2, 0, 0]}>
         <mesh
           position={[doorWidth / 2, doorHeight / 2, 0]}
           material={doorMat}
-          onClick={(e) => { e.stopPropagation(); onDoorClick(projectId); }}
-          onPointerOver={() => { document.body.style.cursor = 'pointer'; }}
-          onPointerOut={() => { document.body.style.cursor = 'auto'; }}
+          onClick={handleClick}
+          onPointerOver={() => { hovered.current = true; document.body.style.cursor = 'pointer'; }}
+          onPointerOut={() => { hovered.current = false; document.body.style.cursor = 'auto'; }}
         >
           <boxGeometry args={[doorWidth, doorHeight, 0.08]} />
           <Outlines thickness={0.015} color="#1a1a1a" />
@@ -102,10 +121,10 @@ export default function ProjectDoor({
           <boxGeometry args={[doorWidth - 0.1, 0.08, 0.02]} />
         </mesh>
 
-        {/* Door content */}
+        {/* Door face label */}
         <Html position={[doorWidth / 2, doorHeight / 2, 0.06]} transform center distanceFactor={5}>
           <div
-            onClick={() => onDoorClick(projectId)}
+            onClick={() => handleClick({} as THREE.Event)}
             style={{
               textAlign: 'center',
               cursor: 'pointer',

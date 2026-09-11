@@ -46,11 +46,8 @@ export default function Scene({ scrollProgress, mouseRef }: SceneProps) {
     lookAtOverrideRef.current = pos;
   }, []);
 
-  // Door click opens fullscreen project room
-  const handleDoorClick = useCallback((projectId: string) => {
-    // Dispatch event to open fullscreen project room
-    window.dispatchEvent(new CustomEvent('openProjectRoom', { detail: { projectId } }));
-  }, []);
+  // Door click is handled internally by ProjectDoor dispatching doorEnter event
+  const handleDoorClick = useCallback(() => {}, []);
 
   return (
     <Canvas

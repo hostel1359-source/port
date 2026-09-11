@@ -1,0 +1,5 @@
+/** <Typesetter>.getTransferables **/
+
+troikaDefine(
+function getTransferables(l){const r=[];for(let f in l)l[f]&&l[f].buffer&&r.push(l[f].buffer);return r}
+)
