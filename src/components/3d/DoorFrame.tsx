@@ -11,8 +11,8 @@ interface DoorFrameProps {
   color: string;
 }
 
-const REVEAL_DISTANCE = 15; // Start appearing at 15 units away
-const FULL_DISTANCE = 6;   // Fully visible at 6 units away
+const REVEAL_DISTANCE = 10; // Start appearing at 10 units away
+const FULL_DISTANCE = 4;   // Fully visible at 4 units away
 
 export default function DoorFrame({ position, label, color }: DoorFrameProps) {
   const groupRef = useRef<THREE.Group>(null);

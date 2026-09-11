@@ -46,18 +46,10 @@ export default function Scene({ scrollProgress, mouseRef }: SceneProps) {
     lookAtOverrideRef.current = pos;
   }, []);
 
-  // Door click just turns camera to face it
+  // Door click opens fullscreen project room
   const handleDoorClick = useCallback((projectId: string) => {
-    // Find the door position to look at
-    const idx = PROJECTS.findIndex(p => p.id === projectId);
-    if (idx >= 0) {
-      const x = idx % 2 === 0 ? -3.9 : 3.9;
-      const z = -40 + -idx * 10;
-      lookAtOverrideRef.current = [x, 1.5, z];
-
-      // Dispatch event to open fullscreen project room
-      window.dispatchEvent(new CustomEvent('openProjectRoom', { detail: { projectId } }));
-    }
+    // Dispatch event to open fullscreen project room
+    window.dispatchEvent(new CustomEvent('openProjectRoom', { detail: { projectId } }));
   }, []);
 
   return (

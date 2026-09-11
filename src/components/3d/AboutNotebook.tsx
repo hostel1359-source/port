@@ -69,25 +69,27 @@ export default function AboutNotebook({ position, scrollProgress }: AboutNoteboo
           <boxGeometry args={[pageW - 0.1, pageH - 0.1, 0.005]} />
           <meshStandardMaterial color="#faf5ee" />
         </mesh>
-        <Html
-          position={[-pageW / 2, 0, 0.015]}
-          transform
-          center
-          distanceFactor={1}
-          scale={0.85}
-          style={{ pointerEvents: 'none' }}
-        >
-          <div style={{ width: '800px', fontFamily: 'Inter, -apple-system, sans-serif', textAlign: 'left', padding: '50px' }}>
-            <h2 style={{
-              fontFamily: 'var(--font-gloria), "Gloria Hallelujah", cursive',
-              fontSize: '120px', color: '#1a1a1a', margin: '0 0 30px 0', textAlign: 'center',
-            }}>About Me</h2>
-            <div style={{ width: '100px', height: '6px', background: '#3d2e22', margin: '0 auto 40px auto' }} />
-            <p style={{ fontSize: '64px', fontWeight: 400, fontStyle: 'italic', color: '#111', lineHeight: 1.5 }}>
-              {PERSONAL.bio}
-            </p>
-          </div>
-        </Html>
+        {scrollProgress >= openStart && scrollProgress <= closeEnd && (
+          <Html
+            position={[-pageW / 2, 0, 0.015]}
+            transform
+            center
+            distanceFactor={1}
+            scale={0.85}
+            style={{ pointerEvents: 'none' }}
+          >
+            <div style={{ width: '800px', fontFamily: 'Inter, -apple-system, sans-serif', textAlign: 'left', padding: '50px' }}>
+              <h2 style={{
+                fontFamily: 'var(--font-gloria), "Gloria Hallelujah", cursive',
+                fontSize: '120px', color: '#1a1a1a', margin: '0 0 30px 0', textAlign: 'center',
+              }}>About Me</h2>
+              <div style={{ width: '100px', height: '6px', background: '#3d2e22', margin: '0 auto 40px auto' }} />
+              <p style={{ fontSize: '64px', fontWeight: 400, fontStyle: 'italic', color: '#111', lineHeight: 1.5 }}>
+                {PERSONAL.bio}
+              </p>
+            </div>
+          </Html>
+        )}
       </group>
 
       {/* RIGHT PAGE */}
@@ -100,31 +102,33 @@ export default function AboutNotebook({ position, scrollProgress }: AboutNoteboo
           <boxGeometry args={[pageW - 0.1, pageH - 0.1, 0.005]} />
           <meshStandardMaterial color="#faf5ee" />
         </mesh>
-        <Html
-          position={[pageW / 2, 0, 0.015]}
-          transform
-          center
-          distanceFactor={1}
-          scale={0.85}
-          style={{ pointerEvents: 'none' }}
-        >
-          <div style={{ width: '700px', fontFamily: 'Inter, -apple-system, sans-serif', padding: '50px' }}>
-            <h3 style={{
-              fontFamily: 'var(--font-gloria), "Gloria Hallelujah", cursive',
-              fontSize: '100px', color: '#1a1a1a', margin: '0 0 30px 0', textAlign: 'center',
-            }}>Interests</h3>
-            <div style={{ width: '80px', height: '6px', background: '#3d2e22', margin: '0 auto 40px auto' }} />
-            {PERSONAL.interests.map((interest) => (
-              <div key={interest} style={{
-                fontSize: '56px', fontWeight: 500, color: '#111', marginBottom: '30px',
-                display: 'flex', alignItems: 'center', gap: '20px', lineHeight: 1.4,
-              }}>
-                <span style={{ width: '14px', height: '14px', borderRadius: '50%', background: '#3d2e22', flexShrink: 0 }} />
-                {interest}
-              </div>
-            ))}
-          </div>
-        </Html>
+        {scrollProgress >= openStart && scrollProgress <= closeEnd && (
+          <Html
+            position={[pageW / 2, 0, 0.015]}
+            transform
+            center
+            distanceFactor={1}
+            scale={0.85}
+            style={{ pointerEvents: 'none' }}
+          >
+            <div style={{ width: '700px', fontFamily: 'Inter, -apple-system, sans-serif', padding: '50px' }}>
+              <h3 style={{
+                fontFamily: 'var(--font-gloria), "Gloria Hallelujah", cursive',
+                fontSize: '100px', color: '#1a1a1a', margin: '0 0 30px 0', textAlign: 'center',
+              }}>Interests</h3>
+              <div style={{ width: '80px', height: '6px', background: '#3d2e22', margin: '0 auto 40px auto' }} />
+              {PERSONAL.interests.map((interest) => (
+                <div key={interest} style={{
+                  fontSize: '56px', fontWeight: 500, color: '#111', marginBottom: '30px',
+                  display: 'flex', alignItems: 'center', gap: '20px', lineHeight: 1.4,
+                }}>
+                  <span style={{ width: '14px', height: '14px', borderRadius: '50%', background: '#3d2e22', flexShrink: 0 }} />
+                  {interest}
+                </div>
+              ))}
+            </div>
+          </Html>
+        )}
       </group>
 
       {/* Spine */}

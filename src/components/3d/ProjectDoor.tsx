@@ -78,36 +78,6 @@ export default function ProjectDoor({
         <meshStandardMaterial color="#f0ebe3" roughness={0.8} />
       </mesh>
 
-      {/* Label INSIDE the doorway */}
-      <Html position={[0, doorHeight / 2, -0.12]} transform center distanceFactor={4}>
-        <div
-          onClick={() => onDoorClick(projectId)}
-          style={{
-            textAlign: 'center',
-            cursor: 'pointer',
-            pointerEvents: 'auto',
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            padding: '16px 24px',
-          }}
-        >
-          <div style={{ fontSize: '11px', fontWeight: 600, color: '#8a7560', marginBottom: '8px', letterSpacing: '0.1em' }}>
-            {(index + 1).toString().padStart(2, '0')}
-          </div>
-          <div style={{ fontSize: '18px', fontWeight: 700, color: '#1a1a1a', marginBottom: '10px' }}>
-            {title}
-          </div>
-          <div style={{
-            fontSize: '9px',
-            fontWeight: 500,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase' as const,
-            color: '#8a7560',
-          }}>
-            CLICK TO VIEW
-          </div>
-        </div>
-      </Html>
-
       {/* Door panel — pivots from left edge (hinge) */}
       <group ref={doorRef} position={[-doorWidth / 2, 0, 0]}>
         <mesh
