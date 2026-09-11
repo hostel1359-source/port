@@ -54,6 +54,9 @@ export default function Scene({ scrollProgress, mouseRef }: SceneProps) {
       const x = idx % 2 === 0 ? -3.9 : 3.9;
       const z = -40 + -idx * 10;
       lookAtOverrideRef.current = [x, 1.5, z];
+
+      // Dispatch event to open fullscreen project room
+      window.dispatchEvent(new CustomEvent('openProjectRoom', { detail: { projectId } }));
     }
   }, []);
 

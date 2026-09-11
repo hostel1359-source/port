@@ -209,22 +209,28 @@
 
   .hud-dot-label {
     position: absolute;
-    right: 1.5rem;
+    right: 1.8rem;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) translateX(8px);
     white-space: nowrap;
-    font-family: var(--font-jetbrains-mono), monospace;
-    font-size: 0.625rem;
-    letter-spacing: 0.1em;
+    font-family: Inter, -apple-system, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-ink-muted);
+    color: #e8e0d0;
+    background: rgba(60, 55, 48, 0.85);
+    backdrop-filter: blur(8px);
+    padding: 5px 12px;
+    border-radius: 4px;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     pointer-events: none;
   }
 
   .hud-dot:hover .hud-dot-label {
     opacity: 1;
+    transform: translateY(-50%) translateX(0);
   }
 
   /* Subtle paper grain overlay */
@@ -283,6 +289,11 @@
 @keyframes codeScroll {
   0% { transform: translateY(0); }
   100% { transform: translateY(-50px); }
+}
+
+@keyframes roomFadeIn {
+  from { opacity: 0; transform: scale(1.02); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 /* Reduced motion */

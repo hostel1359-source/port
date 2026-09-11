@@ -21,6 +21,46 @@ import ContactSection from '@/components/sections/ContactSection';
 
 const Scene = lazy(() => import('@/components/3d/Scene'));
 
+const PROJECT_COLORS = ['#4f9cf5', '#38bdf8', '#8b5cf6', '#ef4444'];
+
+function ColorWash({ scrollProgress }: { scrollProgress: number }) {
+  // Map scroll ranges to project accent colors
+  const ranges = [
+    { start: 0.30, peak: 0.38, end: 0.44 },
+    { start: 0.44, peak: 0.50, end: 0.56 },
+    { start: 0.56, peak: 0.60, end: 0.66 },
+    { start: 0.66, peak: 0.70, end: 0.76 },
+  ];
+
+  let color = 'transparent';
+  let opacity = 0;
+
+  for (let i = 0; i < ranges.length; i++) {
+    const r = ranges[i];
+    if (scrollProgress >= r.start && scrollProgress <= r.end) {
+      const distFromPeak = Math.abs(scrollProgress - r.peak);
+      const halfWidth = (r.end - r.start) / 2;
+      opacity = Math.max(0, 1 - distFromPeak / halfWidth) * 0.12;
+      color = PROJECT_COLORS[i];
+      break;
+    }
+  }
+
+  if (opacity <= 0) return null;
+
+  return (
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 5,
+        background: `radial-gradient(ellipse at center, ${color}, transparent 70%)`,
+        opacity,
+        pointerEvents: 'none',
+        transition: 'opacity 0.3s ease',
+      }}
+    />
+  );
+}
+
 function PortfolioContent() {
   const scrollProgress = useScrollProgress();
   const mouseRef = useMouseParallax();
@@ -67,7 +107,10 @@ function PortfolioContent() {
         </main>
       </div>
 
-      {/* Auto-appearing project side panels */}
+      {/* Color wash overlay — tint shifts near each door */}
+      <ColorWash scrollProgress={scrollProgress} />
+
+      {/* Auto-appearing project side panels + fullscreen rooms */}
       <ProjectSidePanel scrollProgress={scrollProgress} />
     </>
   );
