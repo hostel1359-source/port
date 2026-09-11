@@ -3,17 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --color-paper: #f5f0eb;
-  --color-paper-light: #faf5ee;
-  --color-cream: #f0ebe3;
-  --color-wood: #5c4a3a;
-  --color-wood-light: #8b7355;
-  --color-ink: #1a1a1a;
-  --color-ink-light: #3a3a3a;
-  --color-ink-muted: #8a8578;
-  --color-accent-blue: #4f9cf5;
-  --color-accent-violet: #8b5cf6;
-  --color-accent-cyan: #38bdf8;
+  --color-paper: #0a0a1a;
+  --color-paper-light: #0f0f23;
+  --color-cream: #16213e;
+  --color-wood: #1a1a2e;
+  --color-wood-light: #2a2a4e;
+  --color-ink: #e0e0ff;
+  --color-ink-light: #b0b0d0;
+  --color-ink-muted: #6060a0;
+  --color-accent-blue: #00fff5;
+  --color-accent-violet: #e040fb;
+  --color-accent-cyan: #00d4ff;
 }
 
 @layer base {
@@ -239,7 +239,7 @@
     inset: 0;
     z-index: 60;
     pointer-events: none;
-    opacity: 0.03;
+    opacity: 0.01;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
     background-repeat: repeat;
     background-size: 256px 256px;

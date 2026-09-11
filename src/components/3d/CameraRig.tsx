@@ -176,13 +176,15 @@ export default function CameraRig({ scrollProgress, mouseRef, lookAtOverride }: 
         lookAtOverride.current = null;
       }
     } else {
-      const blend = 1 - Math.exp(-4 * delta);
+      // Ultra-smooth blending for presentation
+      const blend = 1 - Math.exp(-2.5 * delta);
       _currentLookAt.x += (targetLookX - _currentLookAt.x) * blend;
       _currentLookAt.y += (targetLookY - _currentLookAt.y) * blend;
       _currentLookAt.z += (targetLookZ - _currentLookAt.z) * blend;
     }
 
-    const posLambda = 1 - Math.exp(-3 * delta);
+    // Smooth position (lower = smoother, presentation-grade)
+    const posLambda = 1 - Math.exp(-1.8 * delta);
     state.camera.position.lerp(_targetPos, posLambda);
     state.camera.lookAt(_currentLookAt);
 

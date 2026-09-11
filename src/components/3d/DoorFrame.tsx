@@ -11,8 +11,8 @@ interface DoorFrameProps {
   color: string;
 }
 
-const REVEAL_DISTANCE = 10; // Start appearing at 10 units away
-const FULL_DISTANCE = 4;   // Fully visible at 4 units away
+const REVEAL_DISTANCE = 10;
+const FULL_DISTANCE = 4;
 
 export default function DoorFrame({ position, label, color }: DoorFrameProps) {
   const groupRef = useRef<THREE.Group>(null);
@@ -21,47 +21,40 @@ export default function DoorFrame({ position, label, color }: DoorFrameProps) {
   const htmlRef = useRef<HTMLDivElement>(null);
 
   const frameMaterial = useMemo(() => new THREE.MeshStandardMaterial({
-    color: '#5c4a3a', transparent: true, opacity: 0,
+    color: '#1a1a2e', transparent: true, opacity: 0, metalness: 0.3,
   }), []);
   const doorMaterial = useMemo(() => new THREE.MeshStandardMaterial({
-    color: '#8B7355', transparent: true, opacity: 0,
+    color: '#16213e', transparent: true, opacity: 0, metalness: 0.2,
   }), []);
   const accentMaterial = useMemo(() => new THREE.MeshStandardMaterial({
-    color, transparent: true, opacity: 0,
+    color, emissive: color, emissiveIntensity: 0.5, transparent: true, opacity: 0,
   }), [color]);
 
   useFrame((state) => {
     if (!groupRef.current) return;
-
     const camZ = state.camera.position.z;
     const doorZ = position[2];
     const dist = Math.abs(camZ - doorZ);
 
-    // Calculate opacity: 0 when far, 1 when close
     let opacity = 0;
     if (dist < REVEAL_DISTANCE) {
       opacity = Math.min(1, (REVEAL_DISTANCE - dist) / (REVEAL_DISTANCE - FULL_DISTANCE));
     }
 
-    // Smooth lerp
     frameMaterial.opacity = THREE.MathUtils.lerp(frameMaterial.opacity, opacity, 0.08);
     doorMaterial.opacity = THREE.MathUtils.lerp(doorMaterial.opacity, opacity, 0.08);
     accentMaterial.opacity = THREE.MathUtils.lerp(accentMaterial.opacity, opacity, 0.08);
 
-    // Hide entire group (including Outlines) when nearly invisible
     groupRef.current.visible = frameMaterial.opacity > 0.02;
 
-    // Scale up from 0.7 to 1 as it reveals
     const s = 0.7 + frameMaterial.opacity * 0.3;
     groupRef.current.scale.setScalar(s);
 
-    // Doors swing open more as you get closer
     const openAmount = Math.max(0, frameMaterial.opacity);
-    const swing = openAmount * (Math.PI / 4); // up to 45 degrees
+    const swing = openAmount * (Math.PI / 4);
     if (leftDoorRef.current) leftDoorRef.current.rotation.y = swing;
     if (rightDoorRef.current) rightDoorRef.current.rotation.y = -swing;
 
-    // Html label opacity
     if (htmlRef.current) {
       htmlRef.current.style.opacity = String(frameMaterial.opacity);
     }
@@ -69,53 +62,52 @@ export default function DoorFrame({ position, label, color }: DoorFrameProps) {
 
   return (
     <group ref={groupRef} position={position}>
-      {/* Frame Top */}
+      {/* Neon glow light */}
+      <pointLight position={[0, 2, 0.5]} intensity={1.5} distance={8} color={color} />
+
+      {/* Frame */}
       <mesh position={[0, 3, 0]} material={frameMaterial}>
         <boxGeometry args={[3.2, 0.2, 0.4]} />
-        <Outlines thickness={0.02} color="#1a1a1a" />
+        <Outlines thickness={0.025} color={color} />
       </mesh>
-      {/* Frame Left */}
       <mesh position={[-1.5, 1.5, 0]} material={frameMaterial}>
         <boxGeometry args={[0.2, 3, 0.4]} />
-        <Outlines thickness={0.02} color="#1a1a1a" />
+        <Outlines thickness={0.025} color={color} />
       </mesh>
-      {/* Frame Right */}
       <mesh position={[1.5, 1.5, 0]} material={frameMaterial}>
         <boxGeometry args={[0.2, 3, 0.4]} />
-        <Outlines thickness={0.02} color="#1a1a1a" />
+        <Outlines thickness={0.025} color={color} />
       </mesh>
 
-      {/* Sign above door */}
+      {/* Neon sign */}
       <mesh position={[0, 3.4, 0]} material={accentMaterial}>
         <planeGeometry args={[1.5, 0.5]} />
-        <Outlines thickness={0.02} color="#1a1a1a" />
+        <Outlines thickness={0.025} color={color} />
       </mesh>
       <Html position={[0, 3.4, 0.01]} transform center distanceFactor={15}>
         <div ref={htmlRef} style={{
-          fontFamily: 'Space Grotesk, sans-serif',
+          fontFamily: 'Inter, -apple-system, sans-serif',
           fontSize: '24px',
           fontWeight: 'bold',
           color: '#ffffff',
+          textShadow: `0 0 10px ${color}, 0 0 20px ${color}`,
           opacity: 0,
-          transition: 'none',
         }}>
           {label}
         </div>
       </Html>
 
-      {/* Left door panel */}
+      {/* Door panels */}
       <group ref={leftDoorRef} position={[-1.4, 1.5, 0]}>
         <mesh position={[0.7, 0, 0]} material={doorMaterial}>
           <boxGeometry args={[1.4, 2.9, 0.1]} />
-          <Outlines thickness={0.02} color="#1a1a1a" />
+          <Outlines thickness={0.025} color={color} />
         </mesh>
       </group>
-
-      {/* Right door panel */}
       <group ref={rightDoorRef} position={[1.4, 1.5, 0]}>
         <mesh position={[-0.7, 0, 0]} material={doorMaterial}>
           <boxGeometry args={[1.4, 2.9, 0.1]} />
-          <Outlines thickness={0.02} color="#1a1a1a" />
+          <Outlines thickness={0.025} color={color} />
         </mesh>
       </group>
     </group>

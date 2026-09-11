@@ -88,14 +88,18 @@ export default function Scene({ scrollProgress, mouseRef }: SceneProps) {
           />
         ))}
 
-        {/* --- z=-78: DOOR before SKILLS --- */}
-        <DoorFrame position={[0, 0, -78]} label="Skills Lab" color="#10b981" />
+        {/* --- z=-78: SKILLS LABEL (no door) --- */}
+        <group position={[0, 3.4, -78]}>
+          <pointLight position={[0, 0, 1]} intensity={1.5} distance={10} color="#10b981" />
+        </group>
 
         {/* --- z=-80 to -100: SKILLS scattered along the corridor --- */}
         <SkillCloud position={[0, 1.5, -90]} active={activeSection === 'skills' || activeSection === 'projects'} />
 
-        {/* --- z=-110: DOOR before GITHUB --- */}
-        <DoorFrame position={[0, 0, -110]} label="Terminal" color="#f59e0b" />
+        {/* --- z=-110: TERMINAL LABEL (no door) --- */}
+        <group position={[0, 3.4, -110]}>
+          <pointLight position={[0, 0, 1]} intensity={1.5} distance={10} color="#f59e0b" />
+        </group>
 
         {/* --- z=-120: GITHUB TERMINAL --- */}
         <group position={[0, 0, -120]}>

@@ -16,8 +16,8 @@ export default function AboutNotebook({ position, scrollProgress }: AboutNoteboo
   const leftPageRef = useRef<THREE.Group>(null);
   const rightPageRef = useRef<THREE.Group>(null);
 
-  const coverMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#5c4a3a', roughness: 0.7 }), []);
-  const pageMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#faf5ee', roughness: 0.5 }), []);
+  const coverMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#1a1a2e', roughness: 0.3, metalness: 0.4 }), []);
+  const pageMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#16213e', roughness: 0.4 }), []);
 
   const openStart = 0.06;
   const openFull = 0.12;
@@ -63,11 +63,11 @@ export default function AboutNotebook({ position, scrollProgress }: AboutNoteboo
       <group ref={leftPageRef}>
         <mesh position={[-pageW / 2, 0, -0.03]} material={coverMat}>
           <boxGeometry args={[pageW, pageH, 0.04]} />
-          <Outlines thickness={0.015} color="#1a1a1a" />
+          <Outlines thickness={0.02} color="#00fff5" />
         </mesh>
         <mesh position={[-pageW / 2, 0, 0.005]}>
           <boxGeometry args={[pageW - 0.1, pageH - 0.1, 0.005]} />
-          <meshStandardMaterial color="#faf5ee" />
+          <meshStandardMaterial color="#0f0f23" />
         </mesh>
         {scrollProgress >= openStart && scrollProgress <= closeEnd && (
           <Html
@@ -81,10 +81,11 @@ export default function AboutNotebook({ position, scrollProgress }: AboutNoteboo
             <div style={{ width: '800px', fontFamily: 'Inter, -apple-system, sans-serif', textAlign: 'left', padding: '50px' }}>
               <h2 style={{
                 fontFamily: 'var(--font-gloria), "Gloria Hallelujah", cursive',
-                fontSize: '120px', color: '#1a1a1a', margin: '0 0 30px 0', textAlign: 'center',
+                fontSize: '120px', color: '#00fff5', margin: '0 0 30px 0', textAlign: 'center',
+                textShadow: '0 0 20px rgba(0, 255, 245, 0.5)',
               }}>About Me</h2>
-              <div style={{ width: '100px', height: '6px', background: '#3d2e22', margin: '0 auto 40px auto' }} />
-              <p style={{ fontSize: '64px', fontWeight: 400, fontStyle: 'italic', color: '#111', lineHeight: 1.5 }}>
+              <div style={{ width: '100px', height: '6px', background: '#e040fb', margin: '0 auto 40px auto', boxShadow: '0 0 10px #e040fb' }} />
+              <p style={{ fontSize: '64px', fontWeight: 400, fontStyle: 'italic', color: '#e0e0ff', lineHeight: 1.5 }}>
                 {PERSONAL.bio}
               </p>
             </div>
@@ -96,11 +97,11 @@ export default function AboutNotebook({ position, scrollProgress }: AboutNoteboo
       <group ref={rightPageRef}>
         <mesh position={[pageW / 2, 0, -0.03]} material={coverMat}>
           <boxGeometry args={[pageW, pageH, 0.04]} />
-          <Outlines thickness={0.015} color="#1a1a1a" />
+          <Outlines thickness={0.02} color="#00fff5" />
         </mesh>
         <mesh position={[pageW / 2, 0, 0.005]}>
           <boxGeometry args={[pageW - 0.1, pageH - 0.1, 0.005]} />
-          <meshStandardMaterial color="#faf5ee" />
+          <meshStandardMaterial color="#0f0f23" />
         </mesh>
         {scrollProgress >= openStart && scrollProgress <= closeEnd && (
           <Html
@@ -114,15 +115,16 @@ export default function AboutNotebook({ position, scrollProgress }: AboutNoteboo
             <div style={{ width: '700px', fontFamily: 'Inter, -apple-system, sans-serif', padding: '50px' }}>
               <h3 style={{
                 fontFamily: 'var(--font-gloria), "Gloria Hallelujah", cursive',
-                fontSize: '100px', color: '#1a1a1a', margin: '0 0 30px 0', textAlign: 'center',
+                fontSize: '100px', color: '#e040fb', margin: '0 0 30px 0', textAlign: 'center',
+                textShadow: '0 0 20px rgba(224, 64, 251, 0.5)',
               }}>Interests</h3>
-              <div style={{ width: '80px', height: '6px', background: '#3d2e22', margin: '0 auto 40px auto' }} />
+              <div style={{ width: '80px', height: '6px', background: '#00fff5', margin: '0 auto 40px auto', boxShadow: '0 0 10px #00fff5' }} />
               {PERSONAL.interests.map((interest) => (
                 <div key={interest} style={{
-                  fontSize: '56px', fontWeight: 500, color: '#111', marginBottom: '30px',
+                  fontSize: '56px', fontWeight: 500, color: '#e0e0ff', marginBottom: '30px',
                   display: 'flex', alignItems: 'center', gap: '20px', lineHeight: 1.4,
                 }}>
-                  <span style={{ width: '14px', height: '14px', borderRadius: '50%', background: '#3d2e22', flexShrink: 0 }} />
+                  <span style={{ width: '14px', height: '14px', borderRadius: '50%', background: '#00fff5', flexShrink: 0, boxShadow: '0 0 8px #00fff5' }} />
                   {interest}
                 </div>
               ))}
@@ -134,7 +136,7 @@ export default function AboutNotebook({ position, scrollProgress }: AboutNoteboo
       {/* Spine */}
       <mesh material={pageMat} position={[0, 0, -0.03]}>
         <boxGeometry args={[0.08, pageH, 0.08]} />
-        <Outlines thickness={0.01} color="#1a1a1a" />
+        <Outlines thickness={0.015} color="#e040fb" />
       </mesh>
     </group>
   );

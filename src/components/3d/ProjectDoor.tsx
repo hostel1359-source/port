@@ -25,9 +25,9 @@ export default function ProjectDoor({
   rotation,
   onDoorClick,
 }: ProjectDoorProps) {
-  const frameMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#3d2e22', roughness: 0.6 }), []);
-  const doorMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#5c4a3a', roughness: 0.7 }), []);
-  const handleMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#8a7560', roughness: 0.4, metalness: 0.3 }), []);
+  const frameMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#1a1a2e', roughness: 0.4, metalness: 0.3 }), []);
+  const doorMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#16213e', roughness: 0.3, metalness: 0.4 }), []);
+  const handleMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#00fff5', emissive: '#00fff5', emissiveIntensity: 0.3, roughness: 0.2, metalness: 0.8 }), []);
 
   const doorRef = useRef<THREE.Group>(null);
   const currentOpen = useRef(0);
@@ -80,21 +80,21 @@ export default function ProjectDoor({
       {/* Door frame */}
       <mesh position={[-doorWidth / 2 - 0.08, doorHeight / 2, 0]} material={frameMat}>
         <boxGeometry args={[0.15, doorHeight + 0.15, 0.15]} />
-        <Outlines thickness={0.015} color="#1a1a1a" />
+        <Outlines thickness={0.02} color="#00fff5" />
       </mesh>
       <mesh position={[doorWidth / 2 + 0.08, doorHeight / 2, 0]} material={frameMat}>
         <boxGeometry args={[0.15, doorHeight + 0.15, 0.15]} />
-        <Outlines thickness={0.015} color="#1a1a1a" />
+        <Outlines thickness={0.02} color="#00fff5" />
       </mesh>
       <mesh position={[0, doorHeight + 0.08, 0]} material={frameMat}>
         <boxGeometry args={[doorWidth + 0.3, 0.15, 0.15]} />
-        <Outlines thickness={0.015} color="#1a1a1a" />
+        <Outlines thickness={0.02} color="#00fff5" />
       </mesh>
 
       {/* Wall fill behind door */}
       <mesh position={[0, doorHeight / 2, -0.15]}>
         <planeGeometry args={[doorWidth, doorHeight]} />
-        <meshStandardMaterial color="#f0ebe3" roughness={0.8} />
+        <meshStandardMaterial color="#0a0a1a" roughness={0.8} />
       </mesh>
 
       {/* Door panel — pivots from left edge */}
@@ -107,7 +107,7 @@ export default function ProjectDoor({
           onPointerOut={() => { hovered.current = false; document.body.style.cursor = 'auto'; }}
         >
           <boxGeometry args={[doorWidth, doorHeight, 0.08]} />
-          <Outlines thickness={0.015} color="#1a1a1a" />
+          <Outlines thickness={0.02} color="#00fff5" />
         </mesh>
 
         {/* Door handle */}
