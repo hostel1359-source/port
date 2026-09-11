@@ -89,12 +89,15 @@ export default function Scene({ scrollProgress, mouseRef }: SceneProps) {
           />
         ))}
 
-        {/* Floating quote near Solana door — slides in from left */}
-        <FloatingQuote
-          text={"Any fool can write code\nthat a computer can understand.\nGood programmers write code\nthat humans can understand."}
-          position={[0, 1.8, -48]}
-          triggerDistance={14}
-        />
+        {/* === FLOATING QUOTES — slide in from left on approach === */}
+        <FloatingQuote text={'"Code is poetry —\nwrite it like no one\'s watching,\nship it like everyone is."'} position={[0, 1.8, -8]} />
+        <FloatingQuote text={'"First, solve the problem.\nThen, write the code."'} author="John Johnson" position={[0, 1.8, -25]} />
+        <FloatingQuote text={"Any fool can write code\nthat a computer can understand.\nGood programmers write code\nthat humans can understand."} author="Martin Fowler" position={[0, 1.8, -48]} triggerDistance={14} />
+        <FloatingQuote text={'"Simplicity is the\nsoul of efficiency."'} author="Austin Freeman" position={[0, 1.8, -65]} />
+        <FloatingQuote text={'"It\'s not a bug —\nit\'s an undocumented feature."'} position={[0, 1.8, -85]} />
+        <FloatingQuote text={'"The best error message\nis the one that\nnever shows up."'} author="Thomas Fuchs" position={[0, 1.8, -95]} />
+        <FloatingQuote text={'"Talk is cheap.\nShow me the code."'} author="Linus Torvalds" position={[0, 1.8, -108]} />
+        <FloatingQuote text={'"Code never lies,\ncomments sometimes do."'} author="Ron Jeffries" position={[0, 1.8, -130]} />
 
         {/* --- z=-78: SKILLS LABEL (no door) --- */}
         <group position={[0, 3.4, -78]}>
@@ -123,8 +126,6 @@ export default function Scene({ scrollProgress, mouseRef }: SceneProps) {
 
         {/* --- z=-155: CONTACT WALL --- */}
         <ContactWall position={[0, 0, -155]} />
-
-        <WallPoetry onQuoteClick={handleLookAt} />
         <DecorativeObjects />
         <ToyVehicles />
 
