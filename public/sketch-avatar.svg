@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="1000" viewBox="0 0 600 1000" fill="none">
+  <title>A curious developer waving hello</title>
+  <desc>An original pencil drawing of a friendly developer with shaggy hair, round glasses, a little yellow code badge, loose trousers, and worn sneakers.</desc>
+  <defs>
+    <pattern id="avatar-hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(28)">
+      <path d="M0 0v9" stroke="#44443d" stroke-width="1.2" opacity=".4"/>
+      <path d="M3 1v5" stroke="#74746a" stroke-width=".5" opacity=".24"/>
+    </pattern>
+    <pattern id="avatar-soft-hatch" width="13" height="13" patternUnits="userSpaceOnUse" patternTransform="rotate(-32)">
+      <path d="M0 0v13" stroke="#56564d" stroke-width=".8" opacity=".3"/>
+    </pattern>
+    <pattern id="avatar-hair-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
+      <path d="M0 0v7M3 2v4" stroke="#2e302c" stroke-width="1" opacity=".42"/>
+    </pattern>
+  </defs>
+  <g stroke="#44443d" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Loose trouser legs: weight settles on one foot, the other turns out. -->
+    <path d="M195 556q66-24 139 0l21 142-5 151q-15 12-53 3l-17-182-8-36-12 38-16 176q-25 13-52-2l-4-139Z" fill="#ecece4" stroke-width="3.2"/>
+    <path d="m199 578 8 126-2 136 19 7 13-158 19-58 24-18-11-39Z" fill="url(#avatar-soft-hatch)" stroke="none"/>
+    <path d="m308 573 22 131-12 143 29 1 5-145-19-147Z" fill="url(#avatar-hatch)" stroke="none"/>
+    <path d="M194 562q51 23 138 0M207 573l-3 42q17-3 28-24m78-16 13 36-22-14M277 575l1 38-9 11M286 642l-7 26 14 138M260 661l-15 38-9 105" stroke-width="1.5"/>
+    <path d="m207 704 11 11-4 35m25 47-20 16 20 4m64-92 12 12m-3 62 24 9-17 8M198 835q20 10 45 1m56 3q23 9 47 0" stroke-width="1.1" opacity=".7"/>
+    <path d="m198 851 1 21 36 5 3-30m68 5 3 25 34-3-1-26" fill="#faf9f3" stroke-width="2.1"/>
+    <path d="m199 858 38 3m-37 5 36 3m72-9 34 1m-33 7 32-1" stroke-width=".8" opacity=".5"/>
+
+    <!-- A pair of slightly scuffed canvas sneakers. -->
+    <path d="M193 866q19 12 40 2l5 13q-9 15-21 21l-47 12-24-4q-6-9 2-17l25-11Z" fill="#faf9f3" stroke-width="3"/>
+    <path d="M148 904q24 5 43-3l36-14 12-6 1 18q-13 13-43 18l-32 4q-18 1-20-7Z" fill="#e5e5dc" stroke-width="2.2"/>
+    <path d="m188 875-8 14q11 10 24 4l11-14m-60 14q16-1 21 9M149 912q23 5 47-1l33-11" stroke-width="1.3"/>
+    <path d="m188 881 19 3m-25 3 20 4m-11-13-3 12m-3-9 19-1" stroke-width="1.8"/>
+    <path d="M309 869q14 10 32-1l19 18 35 9q11 3 12 13l-4 12q-26 9-50 0l-45-10-7-19Z" fill="#faf9f3" stroke-width="3"/>
+    <path d="M303 895q17 10 49 13l52-3 3 12q-3 7-23 7l-35-5-42-9Z" fill="#e5e5dc" stroke-width="2.2"/>
+    <path d="m322 877 25 21 15-5m-6 2q20-7 35 1m-86 7 41 10q34 9 53 3M347 891l-12 6m7-12-14 7m9-13-13 8" stroke-width="1.4"/>
+    <path d="m156 899 7-2m22 14 10-1m176 4 12 2m-39-3 6 1" stroke-width=".7" opacity=".65"/>
+
+    <!-- The resting hand tucks a thumb into a pocket. -->
+    <path d="M173 388q-21 42-25 82l9 96q2 14 13 17l22-5 13-21-5-19-15-11 2-37 25-78Z" fill="#faf9f3" stroke-width="3"/>
+    <path d="M175 410q-13 35-16 70l11 55-9 14-4-78 13-69Z" fill="url(#avatar-soft-hatch)" stroke="none"/>
+    <path d="m169 535 16-10 11 9-11 9 12 12m-21-6 8 13 10-2m-24-3 7 14 9-2m-22-2 8 11m9-83-7 11m-11-30 1 15" stroke-width="1.35"/>
+
+    <!-- Bent arm, raised palm and five distinct, gently curved fingers. -->
+    <path d="m364 347 35 34 17 23q7 5 11-9l15-105 31-1-12 111q-4 41-29 44-19 3-35-15l-41-43Z" fill="#faf9f3" stroke-width="3.1"/>
+    <path d="m454 302-11 100q-2 18-17 25 16 4 21-7 10-20 15-55l8-66Z" fill="url(#avatar-soft-hatch)" stroke="none"/>
+    <path d="m449 294-5-21q-15-8-24-30l-9-16q-5-9 2-13 7-5 13 3l14 17-7-48q-1-13 7-14 8-1 10 12l7 35-1-55q0-15 9-15 9 0 9 14l-1 55 9-46q2-13 10-11 10 2 7 15l-10 48 17-32q5-10 12-6 8 4 2 15l-18 44q-6 19-25 32l-1 19Z" fill="#faf9f3" stroke-width="2.8"/>
+    <path d="m439 235 12 14q8-10 17-10m-15 34q11-3 19-13m-20-40 5 15m18-17-2 14m15-8-5 12m-43-49 7 1m17-20h8m10 10 8 2m13 23 6 2" stroke-width="1.1"/>
+    <path d="M450 286q11 7 23 0m-54 118 9 8m16-35-3 12m-28 31 7 5" stroke-width="1.25" opacity=".7"/>
+    <path d="m484 130 5-15m25 39 14-8m-76-20-3-13" stroke-width="1.7" opacity=".65"/>
+
+    <!-- Soft cotton t-shirt, uneven sleeves and a small stitched code badge. -->
+    <path d="m224 310-38 14q-25 9-40 48l-8 24 44 24 11-16 1 72-7 88q64 27 154-1l-6-84 4-82 28 21 36-36-24-42q-13-21-47-27l-37-4Z" fill="#faf9f3" stroke-width="3.3"/>
+    <path d="m187 336-11 65 16 10 4 67-6 77 22 8-2-100-8-68Z" fill="url(#avatar-soft-hatch)" stroke="none"/>
+    <path d="m318 341 4 102-4 111 20 4-5-79 3-83 27 18 11-13-26-32Z" fill="url(#avatar-hatch)" stroke="none" opacity=".75"/>
+    <path d="M146 387q22 14 38 20m184 3 25-28M200 351l-7 40m148-35-4 35M212 539q12 7 29 7m-44 10q59 19 133-1M271 331l-12 44m-40 112-9 21m112-73-10 20m-64 100 21-5" stroke-width="1.25"/>
+    <path d="M227 309q-12 25 30 33 40 7 51-28" stroke-width="2.1"/>
+    <path d="M221 316q-10 23 33 33 35 8 58-27" stroke-width="1" opacity=".65"/>
+    <g transform="rotate(5 296 403)">
+      <path d="m270 378 54 1-1 44-53 1Z" fill="#edce55" stroke-width="1.45"/>
+      <path d="m273 382 47 1-1 37-45 1Z" stroke-width=".65" stroke-dasharray="2 4" opacity=".65"/>
+      <path d="m285 393-7 8 7 7m22-15 7 8-7 7m-7-19-7 24" stroke-width="2.1"/>
+    </g>
+
+    <!-- Neck and head are a little asymmetrical, like a drawn portrait. -->
+    <path d="m235 278-2 31q-9 13 16 22 33 9 49-15l-7-45Z" fill="#faf9f3" stroke-width="2.5"/>
+    <path d="m238 279 52-5 3 27q-20 16-57 5Z" fill="url(#avatar-soft-hatch)" stroke="none"/>
+    <path d="M184 199q-16-14-23 1-8 17 4 35 7 10 22 7m151-47q19-13 25 3 4 18-9 32l-15 5" fill="#faf9f3" stroke-width="2.7"/>
+    <path d="m169 205 9 11-5 10m171-21 9-3-7 15" stroke-width="1.3"/>
+    <path d="M185 138q32-36 79-31 55 3 74 42l3 81q-4 38-32 60-17 15-38 16-38 1-64-26-20-23-24-53Z" fill="#faf9f3" stroke-width="3"/>
+    <path d="m325 153 11 24 2 55q-6 41-40 61-12 8-29 8l28-17q26-24 28-57Z" fill="url(#avatar-soft-hatch)" stroke="none"/>
+    <path d="M201 246q4 13 11 19m111-25-5 15" stroke-width=".8" opacity=".55"/>
+
+    <!-- Shaggy charcoal hair, with stray pencil lines and irregular fringe. -->
+    <path d="m180 212-12-31-6-29 10-28-7-12 25 1 2-24 18 8 21-24 16 14 29-16 4 15 31-4-3 14 27 6-4 13 21 13-7 20 9 21-14 35-5 13-10-11-3-35-13-18-20 15-3-20-32 14-1-17-24 18-7-15-21 20-12 4-2 33-8 16Z" fill="#67695f" stroke-width="3.1"/>
+    <path d="m180 212-12-31-6-29 10-28-7-12 25 1 2-24 18 8 21-24 16 14 29-16 4 15 31-4-3 14 27 6-4 13 21 13-7 20 9 21-14 35-5 13-10-11-3-35-13-18-20 15-3-20-32 14-1-17-24 18-7-15-21 20-12 4-2 33-8 16Z" fill="url(#avatar-hair-hatch)" stroke="none"/>
+    <path d="m176 140 21-25m-9 38 31-35m-15 23 23-36m-3 45 32-42m-12 27 30-36m-8 46 30-41m-7 39 19-25m-2 42 20-28m2 45 11-19" stroke="#c2c2b6" stroke-width="1.1" opacity=".65"/>
+    <path d="m157 146 6-18m24-44 3-7m40-16 7 13m74 3 12 7m34 48 6 18m-29-56 10 8M178 174l4-17m26-39 13-17" stroke-width="1" opacity=".65"/>
+
+    <!-- Round spectacles, a small nose and a quietly delighted smile. -->
+    <path d="M239 193q-19-16-34 0m77 0q18-14 35 2" stroke-width="2.4"/>
+    <path d="M242 219q1 25-23 28-23 2-26-23-3-25 22-26 23-1 27 21Z" fill="#faf9f3" fill-opacity=".65" stroke-width="2.8"/>
+    <path d="M326 223q-1 25-25 24-24-2-23-26 2-25 25-24 24 1 23 26Z" fill="#faf9f3" fill-opacity=".65" stroke-width="2.8"/>
+    <path d="M244 218q16-10 33 0m-86-6-12-9m149 10 12-10" stroke-width="2.4"/>
+    <path d="M196 220q0-21 20-20m66 16q5-17 21-17m-60 21q0 21-18 25m101-25q1 19-13 24" stroke-width=".8" opacity=".45"/>
+    <ellipse cx="220" cy="219" rx="3.2" ry="5.2" fill="#44443d" stroke="none"/>
+    <ellipse cx="301" cy="217" rx="3.2" ry="5.2" fill="#44443d" stroke="none"/>
+    <path d="m258 222-5 21q5 5 14 1M239 265q22 19 45-2" stroke-width="2"/>
+    <path d="M248 276q14 6 27-2m-39-12-2 4m53-6 1 5" stroke-width="1" opacity=".7"/>
+    <path d="m207 251 2 5m5-6 1 5m96-7-1 5m-6-3-1 5" stroke-width="1.1" opacity=".55"/>
+
+    <!-- A few faint second strokes preserve the feel of a pencil sketch. -->
+    <path d="M183 224q2 38 24 58 27 28 65 27m-84 26q-26 17-41 55m49 30 1 57-6 73m149-143-1 72 5 77m-145 44-7 105 3 124m143-240 16 115-5 125m80-436q12 33 31 16l7-26" stroke-width=".8" opacity=".28"/>
+  </g>
+</svg>

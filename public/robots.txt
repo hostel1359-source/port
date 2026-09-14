@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://manvesh.dev/sitemap.xml
+Sitemap: https://www.manvesh.space/sitemap.xml

@@ -28,9 +28,16 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: 'Manvesh — Developer Portfolio',
+  metadataBase: new URL('https://www.manvesh.space'),
+  title: 'Manvesh \u2014 Developer Portfolio',
   description:
-    'Passionate developer building AI systems, blockchain tools, and high-performance applications. Explore the void station.',
+    'Step into Manvesh\u2019s pencil-drawn portfolio. Explore a moving 3D world of AI systems, blockchain tools, projects, and curious experiments.',
+  alternates: {
+    canonical: '/',
+  },
+  icons: {
+    icon: '/icon.svg',
+  },
   keywords: [
     'developer',
     'portfolio',
@@ -44,19 +51,19 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Manvesh', url: 'https://github.com/mnvvshu' }],
   openGraph: {
-    title: 'Manvesh — Developer Portfolio',
+    title: 'Manvesh \u2014 Developer Portfolio',
     description:
-      'Passionate developer building AI systems, blockchain tools, and high-performance applications.',
-    url: 'https://manvesh.dev',
+      'Step inside a pencil-drawn world and explore Manvesh\u2019s projects, tools, and story.',
+    url: 'https://www.manvesh.space/',
     siteName: 'Manvesh Portfolio',
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Manvesh — Developer Portfolio',
+    card: 'summary',
+    title: 'Manvesh \u2014 Developer Portfolio',
     description:
-      'Passionate developer building AI systems, blockchain tools, and high-performance applications.',
+      'Step inside a pencil-drawn world and explore Manvesh\u2019s projects, tools, and story.',
   },
   robots: {
     index: true,
@@ -75,7 +82,6 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${gloriaHallelujah.variable} ${caveat.variable}`}
     >
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
         <meta name="theme-color" content="#f5f0eb" />
       </head>
       <body className="bg-paper text-ink font-display antialiased">
