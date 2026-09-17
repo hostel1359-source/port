@@ -17,12 +17,16 @@ function Plant({position,scale=1}:{position:[number,number,number];scale?:number
   </group>;
 }
 
-function Door({ label, note, position, rotation, opening, onClick }: {label:string;note:string;position:[number,number,number];rotation:[number,number,number];opening:boolean;onClick:()=>void}) {
+function Door({ label, note, position, rotation, opening, motion, openPassage = false, onClick }: {label:string;note:string;position:[number,number,number];rotation:[number,number,number];opening:boolean;motion:boolean;openPassage?:boolean;onClick:()=>void}) {
   const hinge = useRef<THREE.Group>(null);
   const [hovered,setHovered] = useState(false);
-  useFrame((_,delta)=> { if(hinge.current) hinge.current.rotation.y = THREE.MathUtils.damp(hinge.current.rotation.y,opening ? -1.38 : hovered ? -.28 : -.035,8,delta); });
+  useFrame((_,delta)=> {
+    if(!hinge.current)return;
+    const angle=opening ? -1.38 : motion&&hovered ? -.28 : -.035;
+    hinge.current.rotation.y=motion ? THREE.MathUtils.damp(hinge.current.rotation.y,angle,8,delta) : angle;
+  });
   return <group position={position} rotation={rotation} onPointerOver={e=>{e.stopPropagation();setHovered(true);document.body.style.cursor='pointer';}} onPointerOut={()=>{setHovered(false);document.body.style.cursor='';}} onClick={e=>{e.stopPropagation();onClick();}}>
-    <SketchBox position={[0,1.7,-.11]} size={[2.04,3.4,.08]} color="#c6c5bc" />
+    {!openPassage && <SketchBox position={[0,1.7,-.11]} size={[2.04,3.4,.08]} color="#c6c5bc" />}
     <SketchBox position={[-1.08,1.74,0]} size={[.17,3.6,.21]} />
     <SketchBox position={[1.08,1.74,0]} size={[.17,3.6,.21]} />
     <SketchBox position={[0,3.51,0]} size={[2.3,.17,.21]} />
@@ -50,7 +54,7 @@ function Avatar() {
   return <mesh position={[0,1.4,-3]}><planeGeometry args={[1.65,2.8]} /><meshBasicMaterial map={map} transparent side={THREE.DoubleSide} depthWrite={false} /></mesh>;
 }
 
-export default function CorridorWorld({room,openingRoom,onDoor}:{room:WorldRoom;openingRoom:WorldRoom|null;onDoor:(room:WorldRoom,door?:DoorPosition)=>void}) {
+export default function CorridorWorld({room,openingRoom,motion,onDoor}:{room:WorldRoom;openingRoom:WorldRoom|null;motion:boolean;onDoor:(room:WorldRoom,door?:DoorPosition)=>void}) {
   return <group>
     {/* The same physical entrance opens into a continuous 55 metre corridor. */}
     <group>
@@ -59,7 +63,7 @@ export default function CorridorWorld({room,openingRoom,onDoor}:{room:WorldRoom;
       <SketchBox position={[0,5.23,4.2]} size={[3.3,1.55,.2]} kind="brick" />
       <SketchBox position={[0,-.08,10]} size={[24,.15,12]} kind="floor" />
       <group position={[0,0,4.4]} scale={[1.3,1.15,1]}>
-        <Door label="MANVESH" note="PORTFOLIO / COME ON IN" position={[0,0,0]} rotation={[0,0,0]} opening={room!=='entrance'||openingRoom==='corridor'} onClick={()=>onDoor('corridor')} />
+        <Door label="MANVESH" note="PORTFOLIO / COME ON IN" position={[0,0,0]} rotation={[0,0,0]} opening={room!=='entrance'||openingRoom==='corridor'} motion={motion} openPassage onClick={()=>onDoor('corridor')} />
       </group>
       <Plant position={[-2.3,0,5]} scale={1.25} />
       <SketchBox position={[3.5,2.7,4.4]} size={[2,1.7,.18]} />
@@ -91,7 +95,7 @@ export default function CorridorWorld({room,openingRoom,onDoor}:{room:WorldRoom;
     <SketchLabel lines={['MANVESH']} position={[0,2.75,-3.35]} width={5.9} height={1.25} fontSize={170} handwritten background="transparent" />
     <SketchLabel lines={['< creative developer />']} position={[0,.55,-2.8]} width={4.6} height={.55} fontSize={76} handwritten background="transparent" />
     <Avatar />
-    {DOORS.map(door=><Door key={door.room} label={door.label} note={door.note} position={[door.x,0,door.z]} rotation={[0,door.x<0?Math.PI/2:-Math.PI/2,0]} opening={openingRoom===door.room} onClick={()=>onDoor(door.room,{x:door.x,z:door.z})} />)}
+    {DOORS.map(door=><Door key={door.room} label={door.label} note={door.note} position={[door.x,0,door.z]} rotation={[0,door.x<0?Math.PI/2:-Math.PI/2,0]} opening={openingRoom===door.room} motion={motion} onClick={()=>onDoor(door.room,{x:door.x,z:door.z})} />)}
     {[
       {x:3.48,z:-6,text:['Code is poetry.','Make something','that matters.']},
       {x:-3.48,z:-18,text:['Stay curious.','Keep building.']},

@@ -91,7 +91,7 @@ function World({room,command,input,motion,fadeRef,onArrive,onDoor,onProject,onDe
     <color attach="background" args={['#f2f2ee']} />
     <fog attach="fog" args={['#f2f2ee',room==='corridor'?19:35,room==='corridor'?49:110]} />
     <SketchProvider>
-      {room==='entrance'||room==='corridor'?<CorridorWorld room={room} openingRoom={command?.to||null} onDoor={onDoor}/>:<InteriorWorlds room={room} progress={progress} motion={motion} onProject={onProject} onDetails={onDetails} onContact={onContact}/>}
+      {room==='entrance'||room==='corridor'?<CorridorWorld room={room} openingRoom={command?.to||null} motion={motion} onDoor={onDoor}/>:<InteriorWorlds room={room} progress={progress} motion={motion} onProject={onProject} onDetails={onDetails} onContact={onContact}/>}
     </SketchProvider>
   </>;
 }
