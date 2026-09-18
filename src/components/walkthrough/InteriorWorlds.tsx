@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import { Edges, useCursor } from '@react-three/drei';
-import { BufferGeometry, DoubleSide, Float32BufferAttribute, type Group } from 'three';
+import { BufferGeometry, DoubleSide, Float32BufferAttribute, Vector3, type Group } from 'three';
 import { PERSONAL } from '@/data/personal';
 import { PROJECTS } from '@/data/projects';
 import { SKILLS, SKILL_CATEGORIES, type SkillCategory } from '@/data/skills';
@@ -72,6 +72,7 @@ function Pin({ position }: { position: Point }) {
 
 function PaperPlane({ progress, motion }: Pick<InteriorWorldsProps, 'progress' | 'motion'>) {
   const group = useRef<Group>(null);
+  const cameraPosition = useMemo(() => new Vector3(), []);
   const geometry = useMemo(() => {
     const result = new BufferGeometry();
     result.setAttribute('position', new Float32BufferAttribute([
@@ -87,7 +88,9 @@ function PaperPlane({ progress, motion }: Pick<InteriorWorldsProps, 'progress' |
   useFrame(({ camera, clock }) => {
     if (!group.current) return;
     const t = motion ? clock.elapsedTime : 0;
-    group.current.position.set(camera.position.x + 1.5 + Math.sin(progress.current * 12) * 0.15, camera.position.y - 1.0 + Math.sin(t * 1.3) * 0.07, camera.position.z - 4.3);
+    camera.getWorldPosition(cameraPosition);
+    group.current.parent?.worldToLocal(cameraPosition);
+    group.current.position.set(cameraPosition.x + 1.5 + Math.sin(progress.current * 12) * 0.15, cameraPosition.y - 1.0 + Math.sin(t * 1.3) * 0.07, cameraPosition.z - 4.3);
     group.current.rotation.set(0.15, -0.18, motion ? Math.sin(t * 0.8) * 0.09 : 0);
   });
   return (

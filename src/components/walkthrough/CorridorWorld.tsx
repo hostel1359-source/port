@@ -6,6 +6,7 @@ import { Edges } from '@react-three/drei';
 import * as THREE from 'three';
 import { SketchBox, SketchLabel, PencilLine, Cloud } from './SketchPrimitives';
 import { DOORS, type WorldRoom, type DoorPosition } from './types';
+import DoorwayPortal from './DoorwayPortal';
 
 function Plant({position,scale=1}:{position:[number,number,number];scale?:number}) {
   return <group position={position} scale={scale}>
@@ -17,7 +18,9 @@ function Plant({position,scale=1}:{position:[number,number,number];scale?:number
   </group>;
 }
 
-function Door({ label, note, position, rotation, opening, motion, openPassage = false, onClick }: {label:string;note:string;position:[number,number,number];rotation:[number,number,number];opening:boolean;motion:boolean;openPassage?:boolean;onClick:()=>void}) {
+const ROOM_TINTS:Record<string,string>={work:'#e2d6c0',studio:'#d8cfb8',about:'#d4ddd6',contact:'#cdd8d3'};
+
+function Door({ label, note, position, rotation, opening, motion, destination, openPassage = false, onClick }: {label:string;note:string;position:[number,number,number];rotation:[number,number,number];opening:boolean;motion:boolean;destination?:Exclude<WorldRoom,'entrance'|'corridor'>;openPassage?:boolean;onClick:()=>void}) {
   const hinge = useRef<THREE.Group>(null);
   const [hovered,setHovered] = useState(false);
   useFrame((_,delta)=> {
@@ -26,7 +29,9 @@ function Door({ label, note, position, rotation, opening, motion, openPassage = 
     hinge.current.rotation.y=motion ? THREE.MathUtils.damp(hinge.current.rotation.y,angle,8,delta) : angle;
   });
   return <group position={position} rotation={rotation} onPointerOver={e=>{e.stopPropagation();setHovered(true);document.body.style.cursor='pointer';}} onPointerOut={()=>{setHovered(false);document.body.style.cursor='';}} onClick={e=>{e.stopPropagation();onClick();}}>
-    {!openPassage && <SketchBox position={[0,1.7,-.11]} size={[2.04,3.4,.08]} color="#c6c5bc" />}
+    {destination&&(opening||hovered)
+      ? <DoorwayPortal room={destination} motion={motion} />
+      : !openPassage&&<mesh position={[0,1.7,-.11]}><planeGeometry args={[2.04,3.4]} /><meshBasicMaterial color={destination?ROOM_TINTS[destination]||'#c6c5bc':'#c6c5bc'} /></mesh>}
     <SketchBox position={[-1.08,1.74,0]} size={[.17,3.6,.21]} />
     <SketchBox position={[1.08,1.74,0]} size={[.17,3.6,.21]} />
     <SketchBox position={[0,3.51,0]} size={[2.3,.17,.21]} />
@@ -38,7 +43,7 @@ function Door({ label, note, position, rotation, opening, motion, openPassage = 
       <SketchBox position={[.96,2.27,.063]} size={[1.53,1.63,.025]} kind="door" />
       <SketchBox position={[.96,.65,.063]} size={[1.53,.9,.025]} kind="door" />
       <SketchLabel lines={[note]} position={[.96,2.83,.091]} width={1.5} height={.4} fontSize={58} handwritten background="#f6f2df" />
-      <SketchLabel lines={label.includes('GALLERY') ? ['</>','DevOS • Scanner','PotatoBoost • Chat'] : label.includes('STUDIO') ? ['TS  JS','PY  REACT','THINGS I BUILD WITH'] : label.includes('ABOUT') ? ['HELLO!','I’m Manvesh.','a curious human'] : ['@','YOUR NEXT IDEA','STARTS HERE']} position={[.96,1.97,.097]} width={1.42} height={1.05} fontSize={64} handwritten background={hovered ? '#ecdfab' : '#f1f0e5'} />
+      <SketchLabel lines={label.includes('GALLERY') ? ['</>','DevOS • Scanner','PotatoBoost • Chat'] : label.includes('STUDIO') ? ['TS  JS','PY  REACT','THINGS I BUILD WITH'] : label.includes('ABOUT') ? ['HELLO!','I\u2019m Manvesh.','a curious human'] : ['@','YOUR NEXT IDEA','STARTS HERE']} position={[.96,1.97,.097]} width={1.42} height={1.05} fontSize={64} handwritten background={hovered ? '#ecdfab' : '#f1f0e5'} />
       <SketchBox position={[.49,2.57,.11]} rotation={[0,0,-.16]} size={[.55,.14,.017]} color="#c1d5d8" />
       <SketchBox position={[1.42,1.4,.11]} rotation={[0,0,-.18]} size={[.5,.14,.017]} color="#c1d5d8" />
       <mesh position={[1.64,1.51,.13]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[.075,.075,.09,12]} /><meshBasicMaterial color="#76756a" /><Edges color="#41413b" /></mesh>
@@ -95,7 +100,7 @@ export default function CorridorWorld({room,openingRoom,motion,onDoor}:{room:Wor
     <SketchLabel lines={['MANVESH']} position={[0,2.75,-3.35]} width={5.9} height={1.25} fontSize={170} handwritten background="transparent" />
     <SketchLabel lines={['< creative developer />']} position={[0,.55,-2.8]} width={4.6} height={.55} fontSize={76} handwritten background="transparent" />
     <Avatar />
-    {DOORS.map(door=><Door key={door.room} label={door.label} note={door.note} position={[door.x,0,door.z]} rotation={[0,door.x<0?Math.PI/2:-Math.PI/2,0]} opening={openingRoom===door.room} motion={motion} onClick={()=>onDoor(door.room,{x:door.x,z:door.z})} />)}
+    {DOORS.map(door=><Door key={door.room} label={door.label} note={door.note} position={[door.x,0,door.z]} rotation={[0,door.x<0?Math.PI/2:-Math.PI/2,0]} opening={openingRoom===door.room} motion={motion} destination={door.room} onClick={()=>onDoor(door.room,{x:door.x,z:door.z})} />)}
     {[
       {x:3.48,z:-6,text:['Code is poetry.','Make something','that matters.']},
       {x:-3.48,z:-18,text:['Stay curious.','Keep building.']},
